@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  if books && books.length > 0
+    h1= `Search Results for ${category}: ${search}`
+    table
+      thead
+        tr
+          th Title
+          th Author
+          th Genre
+          th Year
+      tbody
+        each book in books
+          tr
+            td
+              a(href=`/books/${book.id}`) #{book.title}
+            td #{book.author}
+            td #{book.genre}
+            td #{book.year}
+  else if books && books.length === 0
+    h1 No books found
+  else
+    h1 Sorry, the search was unsuccessful.

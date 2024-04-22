@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  form(method='GET', action='/books/search') 
+    label(for='category') Choose a category to search: &nbsp;
+    select#category(name='category')
+      option(value='title') Title
+      option(value='author') Author
+      option(value='genre') Genre
+      option(value='year') Year
+    br
+    input(type='search' name ='search' placeholder="Enter your search") 
+    input(type="submit" value='Search')
+  
+  br
+  br
+  a.button(href="/books/new") Create New Book
+  br
+  br
+  table
+    thead
+      tr
+        th Title
+        th Author
+        th Genre
+        th Year
+    tbody
+      if books && books.length > 0
+        each book in books
+          tr
+            td
+              a(href=`/books/${books.id}`) #{books.title}
+            td #{books.author}
+            td #{books.genre}
+            td #{books.year}
+      else
+        tr
+          td(colspan="4") <a href="/books/4">The Ballad of Songbirds and Snakes</a>
+          td   

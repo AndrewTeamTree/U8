@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  body
+    h1 New Book
+    
+    form(method="post" action="/books/new")
+      
+      // Input field for the title of the book
+      p
+        label(for="title") Title
+        input#title(name="title", type="text")
+
+      // Input field for the author of the book
+      p
+        label(for="author") Author
+        input#author(name="author", type="text")
+
+      // Input field for the genre of the book
+      p
+        label(for="genre") Genre
+        input#genre(name="genre", type="text")
+
+      // Input field for the year of publication of the book
+      p
+        label(for="year") Year
+        input#year(name="year", type="text")
+
+      // Submit button to create a new book
+      p
+        input(type="submit", value="Create New Book")
+
+      // Cancel button to return to the home page
+      p
+        a.button(href="/") Cancel
