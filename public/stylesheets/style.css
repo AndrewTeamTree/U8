@@ -10,12 +10,11 @@ a {
   transition: 0.4s;
 }
 
-a:hover {
-  color: black;
-}
+  a:hover {
+    color: black;
+  }
 
-a.button,
-input[type=submit] {
+a.button, input[type=submit] {
   color: white;
   background: #019875;
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -25,8 +24,7 @@ input[type=submit] {
   cursor: pointer;
 }
 
-form a.button,
-input[type=submit] {
+form a.button, input[type=submit] {
   margin-left: 140px;
   transition: 0.4s;
 }
@@ -35,10 +33,9 @@ input[type=submit] {
   border: 0;
 }
 
-a.button:hover,
-input[type=submit]:hover {
-  background-color: #01b189;
-}
+  a.button:hover, input[type=submit]:hover {
+    background-color: #01b189;
+  }
 
 p {
   margin: 20px auto;

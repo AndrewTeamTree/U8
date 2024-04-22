@@ -1,4 +1,3 @@
-
 extends layout
 
 block content
@@ -10,12 +9,13 @@ block content
       option(value='genre') Genre
       option(value='year') Year
     br
-    input(type='search' name ='search' placeholder="Enter your search") 
+    input(type='search' name='search' placeholder="Enter your search") 
     input(type="submit" value='Search')
   
   br
   br
-  a.button(href="/books/new") Create New Book <!-- This is the link for creating a new book -->
+  a.button(href="/new") Create New Book 
+
   br
   br
   table

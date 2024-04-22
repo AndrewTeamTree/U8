@@ -9,62 +9,84 @@ router.get('/favicon.ico', (req, res) => {
   res.status(204).end();
 });
 
-
-/* GET search books */
-router.get('/views/search-results', async function (req, res, next) {
+router.get('/search', async function (req, res, next) {
   const category = req.query.category;
   const search = req.query.search.toLowerCase();
+  const books = await Book.findAll();
 
-  // Check if category and search query are provided
-  if (!category || !search) {
-    return res.status(400).send('Bad Request: Category and search query parameters are required.');
+  // No results found
+  if (!search.trim()) {
+    return res.render('error', { error: {}, title: "No results were found." });
   }
 
-  // Check if the category is valid
-  const validCategories = ['title', 'author', 'genre', 'year'];
-  if (!validCategories.includes(category)) {
-    return res.status(400).send('Bad Request: Invalid category provided.');
+  // Ensure books array is not empty
+  if (books.length === 0) {
+    return res.render('error', { error: {}, title: "No books found." });
   }
 
-  try {
-    const books = await Book.findAll({
-      where: {
-        [category]: {
-          [Op.like]: `%${search}%`,
-        },
-      },
-    });
-    if (books.length > 0) {
-      res.render('search-results', { category, search, Book });
-    } else {
-      res.render('error', { error: {}, title: "No results were found." });
+  // Filter books based on category and search query
+  const filteredBooks = books.filter(book => {
+
+    if (!book || !book.title || !book.author || !book.genre) return false;
+
+    const title = book.title.toLowerCase();
+    const author = book.author.toLowerCase();
+    const genre = book.genre.toLowerCase();
+
+    if (category === 'title' && title.includes(search)) {
+      return true;
+    } else if (category === 'author' && author.includes(search)) {
+      return true;
+    } else if (category === 'genre' && genre.includes(search)) {
+      return true;
+    } else if (category === 'year' && book.year === parseInt(search)) {
+      return true;
     }
-  } catch (error) {
-    console.error('Error fetching matched books:', error);
-    res.status(500).send('Internal Server Error');
+
+    return false;
+  });
+
+
+  // Render the filtered books
+  if (filteredBooks.length > 0) {
+    res.render('home-btn', { books: filteredBooks, title: 'Results' });
+  } else {
+    res.render('error', { error: {}, title: "No results were found." });
   }
 });
 
-/* GET form to create a new book */
-router.get('/new', async function (req, res, next) {
-  res.render('new-book', { title: "New Book" });
+
+/* get form to create a new book */
+router.get('/books/new', async (req, res, next) => {
+  try {
+    res.render('new-book', { title: 'New Book' });
+  } catch (error) {
+    next(error);
+  }
 });
 
-/* POST new book entry */
-router.post('/new', async function (req, res, next) {
+/* post new book entry */
+router.post('/new', async (req, res, next) => {
   try {
     const { title, author, genre, year } = req.body;
+    if (!title || !author) {
+      return res.status(400).send('Title and author are required.');
+    }
     const newBook = await Book.create({ title, author, genre, year });
     res.redirect('/');
   } catch (error) {
     console.error('Error creating new book:', error);
+    if (error.name === 'SequelizeValidationError') {
+
+      return res.status(400).send('Validation error: ' + error.message);
+    }
     res.status(500).send('Internal Server Error');
   }
 });
 
 
-/* GET form to update book info */
-router.get('/:id', async function (req, res, next) {
+/* get form to update book info */
+router.get('/:id', async (req, res, next) => {
   try {
     const book = await Book.findByPk(req.params.id);
     if (book) {
@@ -79,38 +101,28 @@ router.get('/:id', async function (req, res, next) {
   }
 });
 
-/* POST to update book in db */
-router.post('/:id', async function (req, res, next) {
-  let book;
+/* post to update book in db */
+router.post('/:id', async (req, res, next) => {
   try {
-    book = await Book.findByPk(req.params.id);
-    if (book) {
-      if (!req.body.title || !req.body.author) {
-        res.render("update-book", { book, title: "Update Book" });
-      } else {
-        await book.update(req.body);
-        res.redirect("/");
-      }
-    } else {
-      next();
+    let book = await Book.findByPk(req.params.id);
+    if (!book) return next();
+    if (!req.body.title || !req.body.author) {
+      return res.render('update-book', { book, title: 'Update Book' });
     }
+    await book.update(req.body);
+    res.redirect('/');
   } catch (error) {
     next(error);
   }
-})
+});
 
-
-
-/* DELETE book in db */
-router.post('/:id/delete', async function (req, res, next) {
-  try { // Add try block here
+/* delete book in db */
+router.post('/:id/delete', async (req, res, next) => {
+  try {
     const book = await Book.findByPk(req.params.id);
-    if (book) {
-      await book.destroy();
-      res.redirect("/");
-    } else {
-      res.sendStatus(404);
-    }
+    if (!book) return res.sendStatus(404);
+    await book.destroy();
+    res.redirect('/');
   } catch (error) {
     next(error);
   }
