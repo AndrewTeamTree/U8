@@ -29,10 +29,10 @@ block content
         each book in books
           tr
             td
-              a(href=`/books/${books.id}`) #{books.title}
-            td #{books.author}
-            td #{books.genre}
-            td #{books.year}
+              a(href=`/books/${book.id}`) #{book.title}
+            td #{book.author}
+            td #{book.genre}
+            td #{book.year}
       else
         tr
           td(colspan="4") <a href="/books/4">The Ballad of Songbirds and Snakes</a>
