@@ -1,3 +1,4 @@
+
 extends layout
 
 block content
@@ -14,7 +15,7 @@ block content
   
   br
   br
-  a.button(href="/books/new") Create New Book
+  a.button(href="/books/new") Create New Book <!-- This is the link for creating a new book -->
   br
   br
   table
@@ -35,5 +36,4 @@ block content
             td #{book.year}
       else
         tr
-          td(colspan="4") <a href="/books/4">The Ballad of Songbirds and Snakes</a>
-          td   
+          td(colspan="4") No books found

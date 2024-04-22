@@ -11,7 +11,7 @@ router.get('/favicon.ico', (req, res) => {
 
 
 /* GET search books */
-router.get('/search', async function (req, res, next) {
+router.get('/views/search-results', async function (req, res, next) {
   const category = req.query.category;
   const search = req.query.search.toLowerCase();
 
@@ -86,7 +86,7 @@ router.post('/:id', async function (req, res, next) {
     book = await Book.findByPk(req.params.id);
     if (book) {
       if (!req.body.title || !req.body.author) {
-        res.render("form-error-update", { book, title: "Update Book" });
+        res.render("update-book", { book, title: "Update Book" });
       } else {
         await book.update(req.body);
         res.redirect("/");
@@ -95,23 +95,24 @@ router.post('/:id', async function (req, res, next) {
       next();
     }
   } catch (error) {
-    if (error.name === "SequelizeValidationError") {
-      book = await Book.build(req.body);
-      res.render("form-error-update", { book, title: "Update Book" })
-    } else {
-      throw error;
-    }
+    next(error);
   }
-});
+})
+
+
 
 /* DELETE book in db */
 router.post('/:id/delete', async function (req, res, next) {
-  const book = await Book.findByPk(req.params.id);
-  if (book) {
-    await book.destroy();
-    res.redirect("/");
-  } else {
-    res.sendStatus(404);
+  try { // Add try block here
+    const book = await Book.findByPk(req.params.id);
+    if (book) {
+      await book.destroy();
+      res.redirect("/");
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (error) {
+    next(error);
   }
 });
 
