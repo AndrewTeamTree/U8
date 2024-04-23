@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  form(method='GET', action='/books/search') 
+  form(method='GET', action='/books/search')
     label(for='category') Choose a category to search: &nbsp;
     select#category(name='category')
       option(value='title') Title
@@ -9,12 +9,12 @@ block content
       option(value='genre') Genre
       option(value='year') Year
     br
-    input(type='search' name='search' placeholder="Enter your search") 
+    input(type='search' name='search' placeholder="Enter your search")
     input(type="submit" value='Search')
-  
+
   br
   br
-  a.button(href="/new") Create New Book 
+  a.button(href="/books/new") Create New Book
 
   br
   br
@@ -25,15 +25,14 @@ block content
         th Author
         th Genre
         th Year
-    tbody
-      if books && books.length > 0
-        each book in books
-          tr
-            td
-              a(href=`/books/${book.id}`) #{book.title}
-            td #{book.author}
-            td #{book.genre}
-            td #{book.year}
+    tbody 
+      each book in books
+        tr
+          td
+            a(href=`/books/${book.id}`) #{book.title}
+          td #{book.author}
+          td #{book.genre}
+          td #{book.year}
       else
         tr
           td(colspan="4") No books found

@@ -1,13 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { Op } = require('sequelize');
+
 const db = require('../models');
 const { Book } = db;
 
-// Handle requests for the favicon.ico file
-router.get('/favicon.ico', (req, res) => {
-  res.status(204).end();
+/*get books view on page*/
+router.get('/', async function (req, res, next) {
+  try {
+    const books = await Book.findAll({ limit: 15 });
+    console.log(books); // Log the books array to the console
+    res.render('index', { books, title: "Books" });
+  } catch (error) {
+    console.error('Error fetching books:', error);
+    next(error);
+  }
 });
+
+
 
 router.get('/search', async function (req, res, next) {
   const category = req.query.category;
@@ -57,7 +66,7 @@ router.get('/search', async function (req, res, next) {
 
 
 /* get form to create a new book */
-router.get('/books/new', async (req, res, next) => {
+router.get('/new', async (req, res, next) => {
   try {
     res.render('new-book', { title: 'New Book' });
   } catch (error) {
@@ -67,17 +76,20 @@ router.get('/books/new', async (req, res, next) => {
 
 /* post new book entry */
 router.post('/new', async (req, res, next) => {
+  let book
   try {
     const { title, author, genre, year } = req.body;
     if (!title || !author) {
       return res.status(400).send('Title and author are required.');
     }
-    const newBook = await Book.create({ title, author, genre, year });
+    Book = await Book.create(req.body);
     res.redirect('/');
   } catch (error) {
     console.error('Error creating new book:', error);
     if (error.name === 'SequelizeValidationError') {
-
+      book = await Book.build(req.body);
+      res.render("error", { book, title: "New Book" })
+    } else {
       return res.status(400).send('Validation error: ' + error.message);
     }
     res.status(500).send('Internal Server Error');
