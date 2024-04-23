@@ -58,7 +58,7 @@ router.get('/search', async function (req, res, next) {
 
   // Render the filtered books
   if (filteredBooks.length > 0) {
-    res.render('home-btn', { books: filteredBooks, title: 'Results' });
+    res.render('home', { books: filteredBooks, title: 'Results' });
   } else {
     res.render('error', { error: {}, title: "No results were found." });
   }
