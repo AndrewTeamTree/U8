@@ -7,7 +7,7 @@ const { Book } = db;
 /*get books view on page*/
 router.get('/', async function (req, res, next) {
   try {
-    const books = await Book.findAll({ limit: 15 });
+    const books = await Book.findAll({ limit: 20 });
     console.log(books); // Log the books array to the console
     res.render('index', { books, title: "Books" });
   } catch (error) {
@@ -76,13 +76,13 @@ router.get('/new', async (req, res, next) => {
 
 /* post new book entry */
 router.post('/new', async (req, res, next) => {
-  let book
+  let book;
   try {
     const { title, author, genre, year } = req.body;
     if (!title || !author) {
       return res.status(400).send('Title and author are required.');
     }
-    Book = await Book.create(req.body);
+    book = await Book.create(req.body); // Corrected assignment
     res.redirect('/');
   } catch (error) {
     console.error('Error creating new book:', error);
