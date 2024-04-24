@@ -36,3 +36,15 @@ block content
       else
         tr
           td(colspan="4") No books found
+
+  br
+  div.pagination
+    if currentPage > 1
+      a.button(href=`/?page=${currentPage - 1}`) Previous
+    each page in Array.from({ length: totalPages }, (_, i) => i + 1)
+      if currentPage === page
+        a.button.page-number.active(href=`/?page=${page}`)= page
+      else
+        a.button(href=`/?page=${page}`)= page
+    if currentPage < totalPages
+      a.button(href=`/?page=${currentPage + 1}`) Next

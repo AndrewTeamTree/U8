@@ -78,27 +78,6 @@ router.post('/new', async function (req, res, next) {
 
 
 
-
-
-/*
-router.get('/new', async (req, res, next) => {
-  try {
-    res.render('book-uppdate-error', { title: 'New Book' });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.post('/new', async function (req, res, next) {
-  try {
-    res.render('book-uppdate-error', { title: 'New Book' });
-  } catch (error) {
-    next(error);
-  }
-});
-*/
-
-
 /* get form to update book info */
 router.get('/:id', async (req, res, next) => {
   try {

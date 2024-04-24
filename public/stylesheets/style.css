@@ -10,11 +10,12 @@ a {
   transition: 0.4s;
 }
 
-  a:hover {
-    color: black;
-  }
+a:hover {
+  color: black;
+}
 
-a.button, input[type=submit] {
+a.button,
+input[type=submit] {
   color: white;
   background: #019875;
   font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -24,7 +25,8 @@ a.button, input[type=submit] {
   cursor: pointer;
 }
 
-form a.button, input[type=submit] {
+form a.button,
+input[type=submit] {
   margin-left: 140px;
   transition: 0.4s;
 }
@@ -33,9 +35,10 @@ input[type=submit] {
   border: 0;
 }
 
-  a.button:hover, input[type=submit]:hover {
-    background-color: #01b189;
-  }
+a.button:hover,
+input[type=submit]:hover {
+  background-color: #01b189;
+}
 
 p {
   margin: 20px auto;
@@ -62,6 +65,24 @@ th {
 tr {
   min-height: 50px;
 }
+
+
+div.pagination a.button.page-number.active {
+  background-color: #019875;
+  color: white;
+}
+
+.active {
+  background-color: #05fcc2;
+  color: rgb(250, 243, 243);
+}
+
+
+.button:hover,
+.active:hover {
+  background-color: #4ebea4;
+}
+
 
 tr:nth-child(2n) {
   background: #E7E7E7;
