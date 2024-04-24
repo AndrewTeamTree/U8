@@ -9,7 +9,7 @@ const { Book } = db;
 /* GET books listing */
 router.get('/', async function (req, res, next) {
     try {
-        const books = await Book.findAll({});
+        const books = await Book.findAll({ limit: 8 });
 
         res.render('index', { books, title: "Books" });
     } catch (error) {

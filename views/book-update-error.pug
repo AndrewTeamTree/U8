@@ -3,18 +3,29 @@ extends layout
 block content
   body
     h2.error Title and Author required!
-    form(method="post" action=`/books/${book.id}`)
+    
+
+    form(method='POST', action='/books/new')  
       p
-        label(for="title") Title
-        input#title(name="title" type="text" value=book.title)
+      label(for='title') Title: &nbsp;
+      input#title(type='text' name='title' ) 
       p
-        label(for="author") Author
-        input#author(name="author" type="text" value=book.author)
+      br
+      label(for='author') Author: &nbsp;
+      input#author(type='text' name='author' )
       p
-        label(for="genre") Genre
-        input#genre(name="genre" type="text" value=book.genre)
+      br
+      label(for='genre') Genre: &nbsp;
+      input#genre(type='text' name='genre')
       p
-        label(for="year") Year
-        input#year(name="year" type="text" value=book.year)
+      br
+      label(for="year") Year: &nbsp;
+      input#year(name="year" type="text")
+
+      // Submit button to create a new book
       p
-        input(type="submit" value="Update Book")
+        input(type="submit" value="Create New Book")
+
+      // Cancel button to return to the home page
+      p
+        a.button(href="/") Cancel

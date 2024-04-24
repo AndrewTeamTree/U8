@@ -69,13 +69,34 @@ router.post('/new', async function (req, res, next) {
   } catch (error) {
     if (error.name === "SequelizeValidationError") {
       book = await Book.build(req.body);
-      res.render("book-update-error", { book, title: "New Book" })
+      res.render('book-update-error', { title: 'New Book' });
     } else {
       throw error;
     }
   }
 });
 
+
+
+
+
+/*
+router.get('/new', async (req, res, next) => {
+  try {
+    res.render('book-uppdate-error', { title: 'New Book' });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/new', async function (req, res, next) {
+  try {
+    res.render('book-uppdate-error', { title: 'New Book' });
+  } catch (error) {
+    next(error);
+  }
+});
+*/
 
 
 /* get form to update book info */
