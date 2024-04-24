@@ -4,20 +4,6 @@ const router = express.Router();
 const db = require('../models');
 const { Book } = db;
 
-/*get books view on page*/
-router.get('/', async function (req, res, next) {
-  try {
-    const books = await Book.findAll({ limit: 20 });
-    console.log(books); // Log the books array to the console
-    res.render('index', { books, title: "Books" });
-  } catch (error) {
-    console.error('Error fetching books:', error);
-    next(error);
-  }
-});
-
-
-
 router.get('/search', async function (req, res, next) {
   const category = req.query.category;
   const search = req.query.search.toLowerCase();
@@ -75,26 +61,21 @@ router.get('/new', async (req, res, next) => {
 });
 
 /* post new book entry */
-router.post('/new', async (req, res, next) => {
+router.post('/new', async function (req, res, next) {
   let book;
   try {
-    const { title, author, genre, year } = req.body;
-    if (!title || !author) {
-      return res.status(400).send('Title and author are required.');
-    }
-    book = await Book.create(req.body); // Corrected assignment
-    res.redirect('/');
+    book = await Book.create(req.body);
+    res.redirect("/");
   } catch (error) {
-    console.error('Error creating new book:', error);
-    if (error.name === 'SequelizeValidationError') {
+    if (error.name === "SequelizeValidationError") {
       book = await Book.build(req.body);
-      res.render("error", { book, title: "New Book" })
+      res.render("book-update-error", { book, title: "New Book" })
     } else {
-      return res.status(400).send('Validation error: ' + error.message);
+      throw error;
     }
-    res.status(500).send('Internal Server Error');
   }
 });
+
 
 
 /* get form to update book info */
