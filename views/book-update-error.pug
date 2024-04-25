@@ -2,8 +2,11 @@ extends layout
 
 block content
   body
-    h2.error Title and Author required!
-    
+    h2.error Oooops!
+  
+    ul.error
+      li Title is required
+      li Author is required
 
     form(method='POST', action='/books/new')  
       p

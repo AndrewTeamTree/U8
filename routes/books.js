@@ -93,21 +93,30 @@ router.get('/:id', async (req, res, next) => {
     next(error);
   }
 });
-
 /* post to update book in db */
 router.post('/:id', async (req, res, next) => {
   try {
     let book = await Book.findByPk(req.params.id);
     if (!book) return next();
-    if (!req.body.title || !req.body.author) {
-      return res.render('update-book', { book, title: 'Update Book' });
+
+    // Validate title and author fields
+    const { title, author } = req.body;
+    const errors = [];
+    if (!title) errors.push({ msg: "'Title' is required" });
+    if (!author) errors.push({ msg: "'Author' is required" });
+
+    // If there are validation errors, render the update book form again
+    if (errors.length > 0) {
+      return res.render('update-book', { book, title: 'Update Book', errors });
     }
+
     await book.update(req.body);
     res.redirect('/');
   } catch (error) {
     next(error);
   }
 });
+
 
 /* delete book in db */
 router.post('/:id/delete', async (req, res, next) => {
