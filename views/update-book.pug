@@ -1,24 +1,32 @@
 extends layout
 
 block content
-  h1= title
-
   if errors
     ul
       each error in errors
         li= error.msg
 
-  form(action=`/${book.id}`, method='POST')
-    label(for='title') Title:
-    input(type='text', id='title', name='title', value=book.title)
-    br
-    label(for='author') Author:
-    input(type='text', id='author', name='author', value=book.author)
-    br
-    label(for='genre') Genre:
-    input(type='text', id='genre', name='genre', value=book.genre)
-    br
-    label(for='year') Year:
-    input(type='number', id='year', name='year', value=book.year)
-    br
-    button(type='submit') Update Book
+  form(action=`/books/${book.id}`, method='POST') 
+    p
+      label(for='title') Title: &nbsp;
+      input(type='text', id='title', name='title', value=book.title)
+    p
+      br
+      label(for='author') Author: &nbsp;
+      input(type='text', id='author', name='author', value=book.author)
+    p
+      br
+      label(for='genre') Genre: &nbsp;
+      input(type='text', id='genre', name='genre', value=book.genre)
+    p
+      br
+      label(for='year') Year: &nbsp;
+      input(type='number', id='year', name='year', value=book.year)
+    p
+      br
+      button(type='submit' class='button') Update Book
+
+  form(action=`/books/${book.id}/delete`, method='POST')
+    button(type='submit' class='button') Delete Book
+
+  button(href="/" class='button') Cancel

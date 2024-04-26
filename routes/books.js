@@ -93,25 +93,49 @@ router.get('/:id', async (req, res, next) => {
     next(error);
   }
 });
-/* post to update book in db */
+
+
+
+
 router.post('/:id', async (req, res, next) => {
+  const { title, author, genre, year } = req.body;
+  const bookId = req.params.id;
+
   try {
-    let book = await Book.findByPk(req.params.id);
-    if (!book) return next();
+    const book = await Book.findByPk(bookId);
 
-    // Validate title and author fields
-    const { title, author } = req.body;
-    const errors = [];
-    if (!title) errors.push({ msg: "'Title' is required" });
-    if (!author) errors.push({ msg: "'Author' is required" });
+    if (!book) {
+      const errNotFound = new Error('That book was not found');
+      errNotFound.status = 404;
+      throw errNotFound;
+    }
 
-    // If there are validation errors, render the update book form again
-    if (errors.length > 0) {
+    // Check if title or author is blank
+    if (!title.trim() || !author.trim()) {
+      const errors = [];
+      if (!title.trim()) {
+        errors.push({ msg: 'Title is required' });
+      }
+      if (!author.trim()) {
+        errors.push({ msg: 'Author is required' });
+      }
+      // Render the update book form again with errors
       return res.render('update-book', { book, title: 'Update Book', errors });
     }
 
-    await book.update(req.body);
+    // Update the book information
+    await Book.update({
+      title,
+      author,
+      genre,
+      year
+    }, {
+      where: { id: bookId }
+    });
+
+    // Redirect to the home page
     res.redirect('/');
+
   } catch (error) {
     next(error);
   }

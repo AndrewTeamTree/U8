@@ -72,6 +72,22 @@ div.pagination a.button.page-number.active {
   color: white;
 }
 
+
+.button {
+  color: white;
+  background: #019875;
+  font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 10px 14px 12px;
+  font-size: 14px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #01b189;
+}
+
+
 .active {
   background-color: #05fcc2;
   color: rgb(250, 243, 243);
