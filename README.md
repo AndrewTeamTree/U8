@@ -2,6 +2,7 @@
 TeamTreehouse Unit 8 Project.
 
 # Sql library manager
+Treehouse Unit 8 Project. This application presents a library database in which users may perform CRUD operations. This application was made with Express, SQL, and Pug.
 
 ## Setup
 
@@ -11,7 +12,7 @@ TeamTreehouse Unit 8 Project.
 
 ## Project Structure
 
-- 
+`JavaScript. Express.js. Pug. SQLite3. Sequelize-cli.`
 
 
 
